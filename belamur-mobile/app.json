@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "belamur-mobile",
+    "host": "https://7fef-2804-431-cffb-31f6-5c5b-5cd8-5053-9a80.ngrok.io",
     "slug": "belamur-mobile",
     "version": "1.0.0",
     "orientation": "portrait",

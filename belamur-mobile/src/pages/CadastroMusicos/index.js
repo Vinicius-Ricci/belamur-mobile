@@ -1,10 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import PhoneInput from 'react-native-phone-input'
+import axios from 'axios';
 
 import * as Animatable from 'react-native-animatable';
 
 export default function CadastroMusicos() {
+const [name, setName] = useState('');
+const [instrument, setInstrument] = useState('');
+const [email, setEmail] = useState('');
+const [phone, setPhone] = useState('');
+
+const handleCadastroMusico = async () => {
+  console.log("Função chamada")
+  axios.post('http://192.168.15.11:3000/musician', {
+  name,
+  instrument,
+  email,
+  phone
+})
+  .then((response) => {
+    console.log('Cadastrou');
+    console.log(response.data);
+    // redirecionar para a tela de login após o cadastro bem-sucedido.
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+};
+
+
   return (
     <View style={styles.container}>
 
@@ -14,18 +40,38 @@ export default function CadastroMusicos() {
 
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         <Text style={styles.title}>Nome</Text>
-        <TextInput placeholder="Digite o seu nome..." style={styles.input} />
+        <TextInput 
+        placeholder="Digite o seu nome..." 
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        />
 
         <Text style={styles.title}>Instrumento</Text>
-        <TextInput placeholder="Digite o seu instrumento..." style={styles.input} />
+        <TextInput 
+        placeholder="Digite o seu instrumento..." 
+        style={styles.input}
+        value={instrument}
+        onChangeText={setInstrument}
+        />
 
         <Text style={styles.title}>E-mail</Text>
-        <TextInput placeholder="Digite o seu e-mail..." style={styles.input} />
+        <TextInput 
+        placeholder="Digite o seu e-mail..." 
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        />
 
         <Text style={styles.title}>Telefone</Text>
-        <PhoneInput placeholder="Digite o seu telefone" style={styles.input} />
+        <TextInput 
+        placeholder="Digite o seu telefone" 
+        style={styles.input}
+        value={phone}
+        onChangeText={setPhone}
+        />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleCadastroMusico}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
       </Animatable.View>
