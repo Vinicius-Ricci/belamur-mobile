@@ -32,15 +32,14 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post('http://192.168.15.11:5000/auth/login', {
+      const response = await axios.post('http://192.168.15.8:5000/auth/login', {
         email,
         password
       });
 
       navigation.navigate('Home');
       console.log(response.data);
-      // Aqui, você pode armazenar o token da resposta em AsyncStorage
-      // e navegar para a próxima tela após o login bem-sucedido.
+
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {

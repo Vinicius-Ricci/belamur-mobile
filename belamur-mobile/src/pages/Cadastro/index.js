@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
+import validator from 'validator';
 
 export default function Cadastro() {
-
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,29 +15,51 @@ export default function Cadastro() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleCadastro = async () => {
-    console.log("Função chamada")
-    axios.post('http://192.168.15.11:5000/auth/register', {
-      name,
-      email,
-      phone,
-      state,
-      city,
-      password,
-      confirmPassword
-    })
-      .then((response) => {
-        console.log('Cadastrou');
-        console.log(response.data);
-        // redirecionar para a tela de login após o cadastro bem-sucedido.
-        navigation.navigate('Login');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
+  const validateEmail = () => {
+    if (!validator.isEmail(email)) {
+      Alert.alert('Erro', 'Digite um email válido.');
+      return false;
+    }
+    return true;
   };
 
+  const validateFields = () => {
+    if (
+      name.trim() === '' ||
+      email.trim() === '' ||
+      phone.trim() === '' ||
+      state.trim() === '' ||
+      city.trim() === '' ||
+      password.trim() === '' ||
+      confirmPassword.trim() === ''
+    ) {
+      Alert.alert('Erro', 'Preencha todos os campos.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleCadastro = async () => {
+    if (!validateEmail() || !validateFields()) {
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://192.168.15.8:5000/auth/register', {
+        name,
+        email,
+        phone,
+        state,
+        city,
+        password,
+        confirmPassword,
+      });
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Falha no cadastro. Verifique as informações fornecidas.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -93,7 +115,7 @@ export default function Cadastro() {
             style={styles.input}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry ={true}
+            secureTextEntry={true}
           />
 
           <Text style={styles.title}>Confirme a senha</Text>
@@ -102,7 +124,7 @@ export default function Cadastro() {
             style={styles.input}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            secureTextEntry ={true}
+            secureTextEntry={true}
           />
 
           <TouchableOpacity style={styles.button} onPress={handleCadastro}>
