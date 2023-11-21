@@ -5,6 +5,7 @@ import Cadastro from '../pages/Cadastro';
 import Login from  '../pages/Login';
 import Sobre from '../pages/Sobre';
 import Inicio from '../pages/Inicio';
+import MostrarEventos from '../pages/MostrarEventos'
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function Routes() {
           <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}}/>
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
           <Stack.Screen name="Sobre" component={Sobre} options={{headerShown: false}}/>
+          <Stack.Screen name="MostrarEventos" component={MostrarEventos} options={{headerShown: false}} />
         </Stack.Navigator>
     );
   }
